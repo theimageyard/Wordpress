@@ -1,0 +1,40 @@
+/*
+ ** Use this function to remove an array of plugins from being loaded
+ **/
+
+add_filter( 'option_active_plugins', 'enable_plugins_selectively' );
+
+function enable_plugins_selectively( $plugins ) {
+
+	// Use add_query_arg to get the current URL.
+  // You can use any other valid method that suits.
+  
+  $this_page = add_query_arg( array() );	
+	if ( $this_page != '/' ) return $plugins;   // i.e. if not home page
+	
+	$plugins_to_remove_from_home_page = array(
+	
+		'add-admin-css/add-admin-css.php',
+		'admin-columns-pro/admin-columns-pro.php',
+		'admin-menu-editor-pro/menu-editor.php',
+		'admin-post-navigation/admin-post-navigation.php',
+		'bulkpress/bulkpress.php',
+		'duplicate-menu/duplicate-menu.php',
+		'duplicate-post/duplicate-post.php',
+		'image-widget/image-widget.php',
+		'intuitive-custom-post-order/intuitive-custom-post-order.php',
+		'ninja-forms-style/ninja-forms-style.php',
+		'ninja-forms/ninja-forms.php',
+		'owl-carousel/owlcarousel.php',
+    // etc
+  );
+	
+	foreach( $plugins_to_remove_from_home_page as $plugin_to_remove ) {
+	
+		$TCT_plugin_key = array_search( $plugin_to_remove, $plugins, true );
+		if ( $TCT_plugin_key != false ) unset( $plugins[ $TCT_plugin_key ] );
+    
+	}
+	
+	return $plugins;
+}
